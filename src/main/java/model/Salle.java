@@ -11,6 +11,7 @@ public class Salle {
 
     public Salle(int capacity) {
         this.capacity = capacity;
+        this.status = "free";
     }
 
     public void reserve() {
