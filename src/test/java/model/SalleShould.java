@@ -45,9 +45,8 @@ public class SalleShould {
     public void return_free() {
         // Given
         Salle salle = new Salle(4);
-        
+
         // Then
         Assert.assertEquals("free", salle.getStatus());
     }
-
 }
