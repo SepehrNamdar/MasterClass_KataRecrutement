@@ -13,10 +13,16 @@ public class SalleShould {
         Salle salle = new Salle(4);
 
         // When
-        salle.reserve();
+        salle.reserve(4);
 
         // Then
         Assert.assertEquals(Status.RESERVED, salle.getStatus());
+    }
+
+    @Test(expected=CapacityTooShortException.class)
+    public void not_reserve() {
+        Salle salle = new Salle(4);
+        salle.reserve(5);
     }
     @Test
     public void is_available_at_time() {

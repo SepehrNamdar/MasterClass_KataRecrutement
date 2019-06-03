@@ -14,7 +14,10 @@ public class Salle {
         this.status = Status.FREE;
     }
 
-    public void reserve() {
+    public void reserve(int nbPerson) {
+        if(this.capacity < nbPerson) {
+            throw new CapacityTooShortException();
+        }
         this.status = Status.RESERVED;
     }
 
