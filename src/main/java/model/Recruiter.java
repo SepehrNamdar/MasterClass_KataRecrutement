@@ -4,16 +4,16 @@ import java.time.LocalDateTime;
 
 public class Recruiter {
     private int i;
-    private String toto;
-    private LocalDateTime now;
+    private String name;
+    private LocalDateTime dateTime;
 
-    public Recruiter(int i, String toto, LocalDateTime now) {
+    public Recruiter(int i, String name, LocalDateTime dateTime) {
         this.i = i;
-        this.toto = toto;
-        this.now = now;
+        this.name = name;
+        this.dateTime = dateTime;
     }
 
     public boolean isAvailable(LocalDateTime localDateTime) {
-        return true;
+        return this.dateTime.isEqual(localDateTime);
     }
 }

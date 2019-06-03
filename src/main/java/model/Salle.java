@@ -5,20 +5,20 @@ import java.time.LocalDateTime;
 public class Salle {
 
     private int capacity;
-    private String status;
+    private Status status;
     private LocalDateTime availableFrom;
     private LocalDateTime availableTo;
 
     public Salle(int capacity) {
         this.capacity = capacity;
-        this.status = "free";
+        this.status = Status.FREE;
     }
 
     public void reserve() {
-        this.status = "reserved";
+        this.status = Status.RESERVED;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return this.status;
     }
 

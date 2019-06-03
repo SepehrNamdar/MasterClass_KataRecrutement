@@ -16,7 +16,7 @@ public class SalleShould {
         salle.reserve();
 
         // Then
-        Assert.assertEquals("reserved", salle.getStatus());
+        Assert.assertEquals(Status.RESERVED, salle.getStatus());
     }
     @Test
     public void is_available_at_time() {
@@ -47,6 +47,6 @@ public class SalleShould {
         Salle salle = new Salle(4);
 
         // Then
-        Assert.assertEquals("free", salle.getStatus());
+        Assert.assertEquals(Status.FREE, salle.getStatus());
     }
 }
