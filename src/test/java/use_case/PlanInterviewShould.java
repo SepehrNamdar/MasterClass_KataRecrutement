@@ -1,29 +1,31 @@
 package use_case;
 
 import model.Recruiter;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class PlanInterviewShould {
 
     private RecruiterRepository recruiterRepository = Mockito.mock(RecruiterRepository.class);
 
     @Test
-    public void plan_an_interview_for_available_recruiter() {
-        PlanInterview planner = new PlanInterview(LocalDateTime.now());
+    public void throw_exception_when_recruiter_is_not_available() {
+        PlanInterview planner = new PlanInterview(LocalDateTime.now(), recruiterRepository);
 
-        Recruiter antoine = new Recruiter(1, "antoine", LocalDateTime.now());
+        Recruiter antoine = new Recruiter(1, "antoine", LocalDateTime.now().plusDays(1));
 
-        planner.plan(antoine);
+        assertThatExceptionOfType(RecruiterNotAvailableException.class)
+                .isThrownBy(() ->
+                        planner.plan(antoine));
     }
 
     @Test
-    @Disabled
     public void call_recruiter_repository() {
-        PlanInterview planner = new PlanInterview(LocalDateTime.now());
+        PlanInterview planner = new PlanInterview(LocalDateTime.now(), recruiterRepository);
 
         Recruiter antoine = new Recruiter(1, "antoine", LocalDateTime.now());
 

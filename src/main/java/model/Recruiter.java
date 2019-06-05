@@ -16,4 +16,8 @@ public class Recruiter {
     public boolean isAvailable(LocalDateTime localDateTime) {
         return this.dateTime.isEqual(localDateTime);
     }
+
+    public String getName() {
+        return name;
+    }
 }
