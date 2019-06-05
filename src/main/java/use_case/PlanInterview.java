@@ -20,6 +20,10 @@ public class PlanInterview {
 
     public void plan(int candidateId) {
         Candidate candidate = candidateRepository.getCandidateById(candidateId);
-        List<Recruiter> recruiters = recruiterRepository.getRecruiters(candidate.getSkills());
+        List<Recruiter> recruiters = recruiterRepository.getRecruiters(candidate.getSkills(), interviewDate);
+        if(recruiters.isEmpty()) {
+            throw new NoRecruiterAvailableException();
+        }
+
     }
 }

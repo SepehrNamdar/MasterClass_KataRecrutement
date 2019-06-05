@@ -1,22 +1,29 @@
 package use_case;
 
 import model.Candidate;
+import model.Recruiter;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class PlanInterviewShould {
 
     private int candidateId = 1;
     private Candidate candidate = new Candidate("Gilles");
     private List<String> candidateTechnos = Arrays.asList(new String[]{"foo", "bar"});
+    private List<Recruiter> recruiters = Arrays.asList(
+            new Recruiter[]{new Recruiter(1, "Ali", LocalDateTime.now()),
+                    new Recruiter(2, "James", LocalDateTime.now())});
     private PlanInterview planner;
 
     private CandidateRepository candidateRepository = Mockito.mock(CandidateRepository.class);
@@ -24,31 +31,32 @@ public class PlanInterviewShould {
 
     @BeforeEach
     public void init() {
-        Mockito.when(candidateRepository.getCandidateById(candidateId)).thenReturn(candidate);
+        when(candidateRepository.getCandidateById(candidateId)).thenReturn(candidate);
         planner = new PlanInterview(LocalDateTime.now(), candidateRepository, recruiterRepository);
         createDefaultCandidate();
     }
 
     @Test
-    @Disabled
-    public void throw_exception_when_recruiter_is_not_available() {
-        PlanInterview planner = new PlanInterview(LocalDateTime.now().minusDays(1), candidateRepository, recruiterRepository);
+    public void throw_exception_when_no_recruiter_is_competent() {
+        PlanInterview planner = new PlanInterview(LocalDateTime.now(), candidateRepository, recruiterRepository);
 
-        assertThatExceptionOfType(RecruiterNotAvailableException.class)
+        assertThatExceptionOfType(NoRecruiterAvailableException.class)
                 .isThrownBy(() ->
-                        planner.plan(1));
+                        planner.plan(candidateId));
     }
 
     @Test
     public void call_candidate_repository() {
+        when(recruiterRepository.getRecruiters(any(), any())).thenReturn(recruiters);
         planner.plan(candidateId);
-        Mockito.verify(candidateRepository).getCandidateById(candidateId);
+        verify(candidateRepository).getCandidateById(candidateId);
     }
 
     @Test
     public void call_recruiter_repository() {
+        when(recruiterRepository.getRecruiters(any(), any())).thenReturn(recruiters);
         planner.plan(candidateId);
-        Mockito.verify(recruiterRepository).getRecruiters(candidateTechnos);
+        verify(recruiterRepository).getRecruiters(any(), any());
     }
 
     private void createDefaultCandidate() {
