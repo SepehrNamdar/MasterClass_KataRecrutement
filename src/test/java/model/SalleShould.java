@@ -1,9 +1,14 @@
 package model;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SalleShould {
 
@@ -16,14 +21,18 @@ public class SalleShould {
         salle.reserve(4);
 
         // Then
-        Assert.assertEquals(Status.RESERVED, salle.getStatus());
+        assertEquals(Status.RESERVED, salle.getStatus());
     }
 
-    @Test(expected=CapacityTooShortException.class)
+    @Test
     public void not_reserve() {
         Salle salle = new Salle(4);
-        salle.reserve(5);
+
+        assertThatExceptionOfType(CapacityTooShortException.class)
+                .isThrownBy(() ->
+                        salle.reserve(5));
     }
+
     @Test
     public void is_available_at_time() {
         // Given
@@ -33,7 +42,7 @@ public class SalleShould {
         //when
         boolean available = salle.isAvailable(LocalDateTime.now());
         // Then
-        Assert.assertTrue(available);
+        assertTrue(available);
     }
 
     @Test
@@ -44,15 +53,16 @@ public class SalleShould {
         //when
         boolean available = salle.isAvailable(LocalDateTime.now().plusDays(2));
         // Then
-        Assert.assertFalse(available);
+        assertFalse(available);
 
     }
+
     @Test
     public void return_free() {
         // Given
         Salle salle = new Salle(4);
 
         // Then
-        Assert.assertEquals(Status.FREE, salle.getStatus());
+        assertEquals(Status.FREE, salle.getStatus());
     }
 }
